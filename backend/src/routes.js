@@ -6,6 +6,10 @@ const SessionController = require('./controllers/SessionController');
 
 const routes = new Router();
 
+app.get('/', (req, res) => {
+  res.send('API Online!');
+});
+
 // --- Rotas de Autenticação ---
 routes.post('/users', UserController.store); // Rota para criar nosso usuário de teste
 routes.post('/sessions', SessionController.store); // Rota de Login
