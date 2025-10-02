@@ -14,7 +14,6 @@ import ItemsTable from './components/ItemsTable';
 import CommercialPolicy from './components/CommercialPolicy';
 import ProposalFooter from './components/ProposalFooter';
 
-
 export default function PublicProposal() {
   const { hash } = useParams();
   const [proposal, setProposal] = useState(null);
@@ -25,8 +24,10 @@ export default function PublicProposal() {
     async function fetchProposal() {
       try {
         const response = await api.get(`/view/proposal/${hash}`);
+        console.log('Proposta recebida:', response.data); // Para debug
         setProposal(response.data);
       } catch (err) {
+        console.error('Erro ao buscar proposta:', err);
         setError('Proposta não encontrada ou inválida.');
       } finally {
         setLoading(false);
@@ -34,6 +35,19 @@ export default function PublicProposal() {
     }
     fetchProposal();
   }, [hash]);
+
+  // Função auxiliar para obter o primeiro nome do cliente de forma segura
+  const getClientFirstName = () => {
+    if (!proposal?.client?.name) return 'Cliente';
+    
+    const names = proposal.client.name.split(' ');
+    return names[0] || 'Cliente';
+  };
+
+  // Função auxiliar para obter o nome da empresa de forma segura
+  const getCompanyName = () => {
+    return proposal?.client?.company_name || proposal?.client?.name || 'Empresa';
+  };
 
   if (loading) {
     return <div className="status-container"><h2>Carregando Proposta...</h2></div>;
@@ -43,14 +57,18 @@ export default function PublicProposal() {
     return <div className="status-container"><h2>{error}</h2></div>;
   }
 
+  if (!proposal) {
+    return <div className="status-container"><h2>Proposta não encontrada</h2></div>;
+  }
+
   return (
     <div className="proposal-wrapper">
       <div className="proposal-container">
         {/* Página 1: Capa */}
-        <Cover clientName={proposal.client.company_name} />
+        <Cover clientName={getCompanyName()} />
 
         {/* Página 2: Introdução */}
-        <Introduction clientFirstName={proposal.client.name.split(' ')[0]} />
+        <Introduction clientFirstName={getClientFirstName()} />
 
         {/* Página 3: Visão Geral dos Serviços */}
         <ServicesOverview />
@@ -65,8 +83,8 @@ export default function PublicProposal() {
         {/* Seção de Custos Dinâmicos (Páginas 11 a 13) */}
         <SectionTitle title="Setup e Consumo" />
         <ItemsTable 
-          items={proposal.items} 
-          totalValue={proposal.total_value} 
+          items={proposal.items || []} 
+          totalValue={proposal.total_value || 0} 
         />
         
         {/* Página 14: Política Comercial */}
