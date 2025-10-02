@@ -1,0 +1,37 @@
+.status-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  color: var(--primary-white);
+}
+
+.proposal-wrapper {
+  background-color: var(--background);
+  padding: 60px 20px;
+  min-height: 100vh;
+}
+
+.proposal-container {
+  max-width: 900px;
+  margin: 0 auto;
+  
+  /* Cor de fundo principal */
+  background-color: var(--container-background);
+  
+  /* --- EFEITO DE PONTOS SUTIS --- */
+  /* Cria um círculo (bolinha) de 1px com uma cor clara e sutil */
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  /* Define o espaçamento entre as bolinhas */
+  background-size: 30px 30px;
+  /* --- FIM DO EFEITO --- */
+
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  padding: 50px 60px;
+  
+  position: relative;
+  z-index: 2;
+}

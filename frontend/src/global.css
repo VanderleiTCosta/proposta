@@ -1,0 +1,38 @@
+
+:root {
+  --background: #12092c; 
+  --container-background: #1a0a3a;
+  --primary-green-light: #64e3b7; 
+  --primary-green-dark: #378e78;  
+  --secondary-teal: #337a7b;   
+  --primary-white: #FFFFFF;
+  --text-secondary: #b3b3b3;
+  --border-color: #3a1a67;
+}
+
+/* Reset básico e aplicação da fonte e cores globais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: 0;
+}
+
+body {
+  background: var(--background);
+  font-family: 'Poppins', sans-serif;
+  color: var(--primary-white);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, strong {
+  font-weight: 700;
+}
+
+button {
+  cursor: pointer;
+}
+
+input, select, button {
+  font-family: 'Poppins', sans-serif;
+}
