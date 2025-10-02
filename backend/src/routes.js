@@ -6,7 +6,7 @@ const SessionController = require('./controllers/SessionController');
 
 const routes = new Router();
 
-app.get('/', (req, res) => {
+routes.get('/', (req, res) => {
   res.send('API Online!');
 });
 
