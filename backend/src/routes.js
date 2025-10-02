@@ -29,6 +29,8 @@ routes.put('/proposals/:id', ProposalController.update);
 routes.delete('/proposals/:id', ProposalController.destroy);
 
 // Rota Pública
+routes.get('/view/proposal/:hash', ProposalController.view);
 routes.get('/proposal/:hash', ProposalController.view);
+
 
 module.exports = routes;
