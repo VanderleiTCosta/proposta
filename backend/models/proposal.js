@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "proposal_id",
         as: "items",
       });
+      this.belongsTo(models.User, { foreignKey: "user_id", as: "user" });
     }
   }
   Proposal.init(

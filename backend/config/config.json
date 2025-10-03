@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "Derley18@", 
+    "username": "root",
+    "password": "SUA_SENHA_DO_MYSQL",
     "database": "proposal_system",
-    "host": "127.0.0.1", 
-    "dialect": "postgres"
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",
@@ -15,7 +15,7 @@
   },
   "production": {
     "use_env_variable": "DATABASE_URL",
-    "dialect": "postgres",
+    "dialect": "mysql",
     "dialectOptions": {
       "ssl": {
         "require": true,

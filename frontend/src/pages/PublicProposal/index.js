@@ -24,14 +24,6 @@ export default function PublicProposal() {
     async function fetchProposal() {
       try {
         const response = await api.get(`/view/proposal/${hash}`);
-        console.log("Proposta recebida:", response.data);
-        // ADICIONE AQUI O CONSOLE.LOG PARA DEBUG
-        console.log("Dados completos da proposta:", response.data);
-        console.log("Estrutura do client:", response.data.client);
-        console.log(
-          "Campos do client:",
-          Object.keys(response.data.client || {})
-        );
         setProposal(response.data);
       } catch (err) {
         console.error("Erro ao buscar proposta:", err);
@@ -114,9 +106,9 @@ export default function PublicProposal() {
         {/* Páginas 15 e 16: Validade e Contato */}
         <ProposalFooter
           validUntil={proposal.valid_until}
-          contactName="Notreve Pagamentos"
+          contactName={proposal.user?.name || "Notreve Pagamentos"}
           contactPhone="(99) 9999-9999"
-          contactEmail="Notreve@email.com"
+          contactEmail={proposal.user?.email || "Notreve@email.com"}
         />
       </div>
     </div>

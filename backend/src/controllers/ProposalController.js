@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const { Proposal, ProposalItem, Client, sequelize } = require("../../models");
+const { Proposal, ProposalItem, Client, User, sequelize } = require("../../models");
 
 class ProposalController {
   // --- Método para CRIAR uma nova proposta (POST /proposals) ---
@@ -7,6 +7,7 @@ class ProposalController {
     const transaction = await sequelize.transaction();
     try {
       const { client_id, valid_until, items } = req.body;
+      const user_id = req.userId;
 
       const client = await Client.findByPk(client_id);
       if (!client) {
@@ -23,6 +24,7 @@ class ProposalController {
       const proposal = await Proposal.create(
         {
           client_id,
+          user_id, // Salva o user_id aqui
           valid_until,
           total_value,
           unique_hash,
@@ -40,7 +42,10 @@ class ProposalController {
       await transaction.commit();
 
       const result = await Proposal.findByPk(proposal.id, {
-        include: { model: ProposalItem, as: "items" },
+        include: [
+          { model: ProposalItem, as: "items" },
+          { model: User, as: "user", attributes: ["name"] } // Inclua o usuário
+        ],
       });
 
       return res.status(201).json(result);
@@ -59,6 +64,7 @@ class ProposalController {
         include: [
           { model: Client, as: "client" },
           { model: ProposalItem, as: "items" },
+          { model: User, as: "user", attributes: ["name"] } // Inclua o usuário
         ],
       });
       return res.status(200).json(proposals);
@@ -78,6 +84,7 @@ class ProposalController {
         include: [
           { model: Client, as: "client" },
           { model: ProposalItem, as: "items" },
+          { model: User, as: "user", attributes: ["name", "email"] } // Inclua o usuário e email para contato
         ],
       });
 
@@ -101,6 +108,7 @@ class ProposalController {
         include: [
           { model: Client, as: "client" },
           { model: ProposalItem, as: "items" },
+          { model: User, as: "user", attributes: ["name"] } // Inclua o usuário
         ],
       });
 
@@ -146,7 +154,10 @@ class ProposalController {
       await transaction.commit();
 
       const result = await Proposal.findByPk(id, {
-        include: ["client", "items"],
+        include: [
+            { model: Client, as: "client" },
+            { model: ProposalItem, as: "items" }
+        ],
       });
 
       return res.status(200).json(result);
