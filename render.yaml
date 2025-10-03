@@ -1,5 +1,8 @@
+databases:
+  - name: proposal-db
+    region: oregon
+
 services:
-  # Serviço do Backend (API Node.js)
   - name: proposta-backend
     type: web
     env: node
@@ -17,7 +20,6 @@ services:
       - key: NODE_ENV
         value: production
 
-  # Serviço do Frontend (Site Estático em React)
   - name: proposta-frontend
     type: static
     region: oregon
@@ -27,15 +29,9 @@ services:
     envVars:
       - key: REACT_APP_API_URL
         fromService:
-          type: web
           name: proposta-backend
           property: url
     routes:
       - type: rewrite
         source: /*
         destination: /index.html
-
-# Serviço do Banco de Dados PostgreSQL
-databases:
-  - name: proposal-db
-    region: oregon
