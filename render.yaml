@@ -1,36 +1,29 @@
 services:
-  # 1. Serviço do Banco de Dados PostgreSQL
-  - name: proposal-db
-    type: psql
-    psqlVersion: 15 # Você pode escolher a versão do Postgres
-    region: oregon # Escolha a região mais próxima de você
-
-  # 2. Serviço do Backend (API Node.js)
+  # Serviço do Backend (API Node.js)
   - name: proposta-backend
     type: web
     env: node
     region: oregon
-    rootDir: backend  # Diretório raiz do serviço de backend
-    buildCommand: "npm install && npm run db:migrate" # Comando para instalar dependências e rodar migrations
-    startCommand: "npm start" # Comando para iniciar o servidor
+    rootDir: backend
+    buildCommand: "npm install && npm run db:migrate"
+    startCommand: "npm start"
     envVars:
       - key: DATABASE_URL
-        fromService:
-          type: psql
+        fromDatabase:
           name: proposal-db
           property: connectionString
-      - key: JWT_SECRET # IMPORTANTE: Troque por um segredo forte
-        generateValue: true # Gera um valor aleatório seguro no primeiro deploy
+      - key: JWT_SECRET
+        generateValue: true
       - key: NODE_ENV
         value: production
 
-  # 3. Serviço do Frontend (Site Estático em React)
+  # Serviço do Frontend (Site Estático em React)
   - name: proposta-frontend
     type: static
     region: oregon
-    rootDir: frontend  # Diretório raiz do serviço de frontend
-    buildCommand: "npm install && npm run build" # Comando para instalar dependências e buildar o React
-    publishDir: build # Pasta onde o build do React é gerado
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    publishDir: build
     envVars:
       - key: REACT_APP_API_URL
         fromService:
@@ -41,3 +34,8 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
+
+# Serviço do Banco de Dados PostgreSQL
+databases:
+  - name: proposal-db
+    region: oregon
